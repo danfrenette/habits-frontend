@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
-import SessionProvider from "./lib/SessionProvider";
+import SessionProvider from "./lib/contexts/SessionProvider";
+import TanstackQueryProvider from "./lib/contexts/TanstackQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased flex flex-row`}>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <TanstackQueryProvider>
+          <SessionProvider session={session}>{children}</SessionProvider>
+        </TanstackQueryProvider>
       </body>
     </html>
   );
