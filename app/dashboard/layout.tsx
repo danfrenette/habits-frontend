@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Nav from "../components/dashboard/Nav";
 import { Search } from "../components/dashboard/Search";
+import ModeToggle from "../components/ModeToggle";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -16,6 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Nav className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
               <Search />
+              <ModeToggle />
             </div>
           </div>
         </div>
