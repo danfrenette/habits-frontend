@@ -4,6 +4,7 @@ import "./globals.css";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./lib/contexts/SessionProvider";
 import TanstackQueryProvider from "./lib/contexts/TanstackQueryProvider";
+import { AuthenticationPage } from "./components/AuthenticationPage";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased flex flex-row`}>
         <TanstackQueryProvider>
-          <SessionProvider session={session}>{children}</SessionProvider>
+          <SessionProvider session={session}>
+            {!session && <AuthenticationPage />}
+
+            {session && children}
+          </SessionProvider>
         </TanstackQueryProvider>
       </body>
     </html>
