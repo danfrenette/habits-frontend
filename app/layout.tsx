@@ -6,6 +6,7 @@ import SessionProvider from "./lib/contexts/SessionProvider";
 import TanstackQueryProvider from "./lib/contexts/TanstackQueryProvider";
 import { AuthenticationPage } from "./components/AuthenticationPage";
 import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider";
+import { Navbar } from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,7 +34,7 @@ export default async function RootLayout({
             <SessionProvider session={session}>
               {!session && <AuthenticationPage />}
 
-              {session && children}
+              {session && <Navbar>{children}</Navbar>}
             </SessionProvider>
           </ThemeProvider>
         </TanstackQueryProvider>

@@ -4,15 +4,15 @@ import { cn } from "@/app/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Nav({
+export default function Links({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
   const links = [
     {
-      name: "Dashboard",
-      href: "/dashboard",
+      name: "Habits",
+      href: "/habits",
     },
   ];
 
