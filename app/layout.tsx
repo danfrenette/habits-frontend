@@ -7,6 +7,7 @@ import TanstackQueryProvider from "./lib/contexts/TanstackQueryProvider";
 import { AuthenticationPage } from "./components/AuthenticationPage";
 import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider";
 import { Navbar } from "./components/Navbar";
+import { Toaster } from "./components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default async function RootLayout({
               {!session && <AuthenticationPage />}
 
               {session && <Navbar>{children}</Navbar>}
+              <Toaster />
             </SessionProvider>
           </ThemeProvider>
         </TanstackQueryProvider>

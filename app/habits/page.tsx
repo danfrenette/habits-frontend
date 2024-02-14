@@ -40,7 +40,7 @@ export default function Page() {
         </div>
         <div className="flex items-center">
           <Button asChild>
-            <Link href="/new-habit">
+            <Link href="/habits/new">
               <PlusIcon />
               New Habit
             </Link>
