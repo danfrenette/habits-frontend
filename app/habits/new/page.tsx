@@ -8,6 +8,7 @@ import { Resolver, useForm } from "react-hook-form";
 import { useCreateHabit } from "@/app/lib/queries/useCreateHabit";
 import { useSession } from "next-auth/react";
 import { toast } from "@/app/components/ui/use-toast";
+import { CueType } from "@/app/types/backend/Habit";
 
 export default function Page() {
   const { data: session } = useSession();
@@ -18,6 +19,7 @@ export default function Page() {
     name: string;
     current: boolean;
     cueName: string;
+    cueType: CueType;
   }
 
   const validateName = (name: string): string | null => {
