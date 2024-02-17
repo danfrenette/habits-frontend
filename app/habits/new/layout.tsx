@@ -2,17 +2,22 @@ import { Metadata } from "next";
 
 import { Separator } from "@/app/components/ui/separator";
 import { SidebarNav } from "@/app/components/SidebarNav/SidebarNav";
+import {
+  FormSection,
+  HabitFormProvider,
+} from "@/app/lib/contexts/HabitFormContext/HabitFormContext";
 
 export const metadata: Metadata = {
   title: "Forms",
   description: "Advanced form example using react-hook-form and Zod.",
 };
 
-const sidebarNavItems = [
-  {
-    title: "General",
-    href: "/habits/new/general",
-  },
+const formSections: FormSection[] = [
+  "General",
+  "Cue",
+  "Craving",
+  "Response",
+  "Reward",
 ];
 
 interface SettingsLayoutProps {
@@ -21,20 +26,22 @@ interface SettingsLayoutProps {
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <div className="space-y-6 p-10 pb-16 md:block">
-      <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">New Habit</h2>
-        <p className="text-muted-foreground">
-          Create a new habit to track your progress.
-        </p>
+    <HabitFormProvider>
+      <div className="space-y-6 p-10 pb-16 md:block">
+        <div className="space-y-0.5">
+          <h2 className="text-2xl font-bold tracking-tight">New Habit</h2>
+          <p className="text-muted-foreground">
+            Create a new habit to track your progress.
+          </p>
+        </div>
+        <Separator className="my-6" />
+        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+          <aside className="-mx-4 lg:w-1/5">
+            <SidebarNav formSections={formSections} />
+          </aside>
+          <div className="flex-1 lg:max-w-2xl">{children}</div>
+        </div>
       </div>
-      <Separator className="my-6" />
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <aside className="-mx-4 lg:w-1/5">
-          <SidebarNav items={sidebarNavItems} />
-        </aside>
-        <div className="flex-1 lg:max-w-2xl">{children}</div>
-      </div>
-    </div>
+    </HabitFormProvider>
   );
 }

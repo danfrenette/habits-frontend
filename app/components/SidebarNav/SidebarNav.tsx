@@ -1,19 +1,22 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { buttonVariants } from "../ui/button";
+import {
+  FormSection,
+  useHabitForm,
+} from "@/app/lib/contexts/HabitFormContext/HabitFormContext";
+import { Button, buttonVariants } from "../ui/button";
 import { cn } from "@/app/lib/utils";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  items: {
-    href: string;
-    title: string;
-  }[];
+  formSections: FormSection[];
 }
 
-export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
-  const pathname = usePathname();
+export function SidebarNav({
+  className,
+  formSections,
+  ...props
+}: SidebarNavProps) {
+  const { currentSection, goToSection } = useHabitForm();
 
   return (
     <nav
@@ -23,20 +26,21 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       )}
       {...props}
     >
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
+      {formSections.map((section) => (
+        <Button
+          key={section}
+          onClick={() => goToSection(section)}
+          variant="ghost"
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            pathname === item.href
+            currentSection === section
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start"
           )}
         >
-          {item.title}
-        </Link>
+          {section}
+        </Button>
       ))}
     </nav>
   );
