@@ -23,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/ui/popover";
+import { TimePicker } from "@/app/components/ui/time-picker";
 import { cn } from "@/app/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
@@ -33,7 +34,7 @@ export function CueForm({ form, onSubmit }: { form: any; onSubmit: any }) {
     { label: "Emotional", value: "emotional" },
     { label: "Preceding Action", value: "preceding_action" },
   ];
-
+  const selectedCueType = form.watch("cueType");
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -42,7 +43,7 @@ export function CueForm({ form, onSubmit }: { form: any; onSubmit: any }) {
           name="cueDescription"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cue Description</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Input placeholder="My Cue" {...field} />
               </FormControl>
@@ -60,7 +61,7 @@ export function CueForm({ form, onSubmit }: { form: any; onSubmit: any }) {
           name="cueType"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Cue Type</FormLabel>
+              <FormLabel>Type</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -117,6 +118,29 @@ export function CueForm({ form, onSubmit }: { form: any; onSubmit: any }) {
             </FormItem>
           )}
         />
+        {selectedCueType === "time_based" && (
+          <FormField
+            control={form.control}
+            name="cueTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Time</FormLabel>
+                <FormControl>
+                  <TimePicker
+                    value={field.value}
+                    onChange={(value) => {
+                      form.setValue("cueTime", value);
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Assuming this is a time-based cue, what time does it occur?
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </form>
     </Form>
   );

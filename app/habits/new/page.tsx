@@ -9,6 +9,7 @@ import { useCreateHabit } from "@/app/lib/queries/useCreateHabit";
 import { useSession } from "next-auth/react";
 import { toast } from "@/app/components/ui/use-toast";
 import { CueType } from "@/app/types/backend/Habit";
+import { TimeValue } from "react-aria";
 
 export default function Page() {
   const { data: session } = useSession();
@@ -20,6 +21,7 @@ export default function Page() {
     current: boolean;
     cueName: string;
     cueType: CueType;
+    cueTime: TimeValue;
   }
 
   const validateName = (name: string): string | null => {
