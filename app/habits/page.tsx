@@ -19,7 +19,7 @@ import Link from "next/link";
 
 export default function Page() {
   const { data: session } = useSession();
-  const { data: habits, error } = useHabits(session.user.id);
+  const { data: habits, error } = useHabits(session?.user.id as string);
   console.log("habits", habits);
 
   return (

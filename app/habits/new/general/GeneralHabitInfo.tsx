@@ -43,7 +43,7 @@ const customResolver: Resolver<FormValues> = async (values) => {
 
 export function GeneralHabitInfo() {
   const { data: session } = useSession();
-  const createHabit = useCreateHabit(session.user.id);
+  const createHabit = useCreateHabit(session?.user.id as string);
 
   const form = useForm<FormValues>({
     resolver: customResolver,

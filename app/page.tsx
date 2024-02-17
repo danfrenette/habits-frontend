@@ -1,10 +1,15 @@
 "use client";
-import { useSession, signIn, signOut } from "next-auth/react";
+
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function Home() {
   const { data: session } = useSession();
-  // throw error if there isn't a session
-  if (!session) {
-    throw new Error("No session");
-  }
+
+  return (
+    <div>
+      <h1>Home</h1>
+      <p>Welcome {session?.user.name}</p>
+    </div>
+  );
 }
