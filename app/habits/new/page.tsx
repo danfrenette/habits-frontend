@@ -22,6 +22,9 @@ export default function Page() {
     cueName: string;
     cueType: CueType;
     cueTime: TimeValue;
+    cueRrule: string;
+    frequency: string;
+    byWeekday: string[];
   }
 
   const validateName = (name: string): string | null => {
@@ -49,10 +52,12 @@ export default function Page() {
       current: false,
       name: "",
       cueName: "",
+      byWeekday: [],
     },
   });
 
   const onSubmit = (data: FormValues) => {
+    debugger;
     createHabit.mutate(data, {
       onSuccess: () => {
         toast({

@@ -26,6 +26,7 @@ import {
 import { TimePicker } from "@/app/components/ui/time-picker";
 import { cn } from "@/app/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import RecurrenceForm from "./RecurrenceForm";
 
 export function CueForm({ form, onSubmit }: { form: any; onSubmit: any }) {
   const cueTypes = [
@@ -119,27 +120,45 @@ export function CueForm({ form, onSubmit }: { form: any; onSubmit: any }) {
           )}
         />
         {selectedCueType === "time_based" && (
-          <FormField
-            control={form.control}
-            name="cueTime"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Time</FormLabel>
-                <FormControl>
-                  <TimePicker
-                    value={field.value}
-                    onChange={(value) => {
-                      form.setValue("cueTime", value);
-                    }}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Assuming this is a time-based cue, what time does it occur?
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <>
+            <FormField
+              control={form.control}
+              name="cueTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Time</FormLabel>
+                  <FormControl>
+                    <TimePicker
+                      value={field.value}
+                      onChange={(value) => {
+                        form.setValue("cueTime", value);
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Assuming this is a time-based cue, what time does it occur?
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="cueRrule"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Recurrence</FormLabel>
+                  <FormControl>
+                    <RecurrenceForm form={form} />
+                  </FormControl>
+                  <FormDescription>
+                    How often does this cue occur?
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
         )}
       </form>
     </Form>
