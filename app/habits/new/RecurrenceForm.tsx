@@ -53,7 +53,26 @@ const RecurrenceForm = ({ form }: { form: any }) => {
 
   return (
     <>
-      {/* Frequency Selector */}
+      <FormField
+        control={form.control}
+        name="interval"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Interval</FormLabel>
+            <FormControl>
+              <Input type="number" {...field} placeholder="Interval" />
+            </FormControl>
+            <FormDescription>
+              Defines the interval between each event occurrence within the
+              specified frequency. For example, an Interval of 2 with a
+              Frequency of &quot;Daily&quot; means the event occurs every other
+              day.
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
       <FormField
         control={form.control}
         name="frequency"
@@ -81,10 +100,6 @@ const RecurrenceForm = ({ form }: { form: any }) => {
           </FormItem>
         )}
       />
-
-      {/* Interval Input */}
-      {/* <Input type="number" {...register("interval")} placeholder="Interval" /> */}
-
       {/* Days of the Week Checkboxes */}
       {frequency === "WEEKLY" && (
         <div className="flex flex-row">

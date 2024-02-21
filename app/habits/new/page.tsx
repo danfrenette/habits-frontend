@@ -25,6 +25,7 @@ export default function Page() {
     cueRrule: string;
     frequency: string;
     byWeekday: string[];
+    interval: number;
   }
 
   const validateName = (name: string): string | null => {
