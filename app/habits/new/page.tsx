@@ -26,6 +26,7 @@ export default function Page() {
     frequency: string;
     byWeekday: string[];
     interval: number;
+    count: number;
   }
 
   const validateName = (name: string): string | null => {
