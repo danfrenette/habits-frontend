@@ -29,6 +29,7 @@ export default function Page() {
     interval: number;
     count: number;
     responseDescription: string;
+    tasks: string[];
   }
 
   const validateName = (name: string): string | null => {
@@ -57,6 +58,7 @@ export default function Page() {
       name: "",
       cueDescription: "",
       byWeekday: [],
+      tasks: [],
     },
   });
 
