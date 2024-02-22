@@ -4,6 +4,7 @@ import { Separator } from "@/app/components/ui/separator";
 import { GeneralHabitInfo } from "./GeneralHabitInfo";
 import { useHabitForm } from "@/app/lib/contexts/HabitFormContext/HabitFormContext";
 import { CueForm } from "./CueForm";
+import { ResponseForm } from "./ResponseForm";
 import { Resolver, useForm } from "react-hook-form";
 import { useCreateHabit } from "@/app/lib/queries/useCreateHabit";
 import { useSession } from "next-auth/react";
@@ -19,7 +20,7 @@ export default function Page() {
   interface FormValues {
     name: string;
     current: boolean;
-    cueName: string;
+    cueDescription: string;
     cueType: CueType;
     cueTime: TimeValue;
     cueRrule: string;
@@ -27,6 +28,7 @@ export default function Page() {
     byWeekday: string[];
     interval: number;
     count: number;
+    responseDescription: string;
   }
 
   const validateName = (name: string): string | null => {
@@ -53,7 +55,7 @@ export default function Page() {
     defaultValues: {
       current: false,
       name: "",
-      cueName: "",
+      cueDescription: "",
       byWeekday: [],
     },
   });
@@ -84,8 +86,8 @@ export default function Page() {
         return <CueForm form={form} onSubmit={onSubmit} />;
       // case "Craving":
       //   return <CravingForm />;
-      // case "Response":
-      //   return <ResponseForm />;
+      case "Response":
+        return <ResponseForm form={form} onSubmit={onSubmit} />;
       // case "Reward":
       //   return <RewardForm />;
       default:
