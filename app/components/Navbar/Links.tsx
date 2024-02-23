@@ -14,6 +14,10 @@ export default function Links({
       name: "Habits",
       href: "/habits",
     },
+    {
+      name: "Tasks",
+      href: "/tasks",
+    },
   ];
 
   return (
