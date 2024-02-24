@@ -3,15 +3,14 @@
 import { useSession } from "next-auth/react";
 import { useTasks } from "../lib/queries/useTasks";
 import ZeroState from "../components/ZeroState";
+import { DataTable } from "./DataTable/DataTable";
 
-// import { columns } from "./components/columns";
-// import { DataTable } from "./components/data-table";
+import { columns } from "./DataTable/columns";
 // import { UserNav } from "./components/user-nav";
 
 export default function TaskPage() {
   const { data: session } = useSession();
   const { data: tasks, error } = useTasks(session?.user.id as string);
-  console.log("tasks", tasks);
 
   return (
     <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -24,13 +23,7 @@ export default function TaskPage() {
         </div>
       </div>
       {tasks?.length ? (
-        tasks.map((task) => (
-          <div key={task.id} className="flex items-center space-x-4">
-            <div>
-              <h3 className="text-lg font-semibold">{task.title}</h3>
-            </div>
-          </div>
-        ))
+        <DataTable columns={columns} data={tasks} />
       ) : (
         <ZeroState>You don&apos;t have any tasks</ZeroState>
       )}
