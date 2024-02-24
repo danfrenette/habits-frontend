@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import { Separator } from "@/app/components/ui/separator";
-import { SidebarNav } from "@/app/components/SidebarNav/SidebarNav";
+import { SidebarNav } from "@/app/habits/new/SidebarNav";
 import {
   FormSection,
   HabitFormProvider,

@@ -4,7 +4,7 @@ import {
   FormSection,
   useHabitForm,
 } from "@/app/lib/contexts/HabitFormContext/HabitFormContext";
-import { Button, buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../../components/ui/button";
 import { cn } from "@/app/lib/utils";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
