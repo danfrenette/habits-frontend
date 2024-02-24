@@ -4,10 +4,11 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Task } from "@/app/types/backend/Task";
 import { Checkbox } from "@/app/components/ui/checkbox";
-import { Badge } from "@/app/components/ui/badge";
-import { labels, statuses } from "./data";
+import { statuses } from "./data";
 import { DataTableRowActions } from "./DataTableRowActions";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
+import { Button } from "@/app/components/ui/button";
+import CompleteTaskButton from "./CompleteTaskButton";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -83,5 +84,14 @@ export const columns: ColumnDef<Task>[] = [
   {
     id: "actions",
     cell: ({ row }) => <DataTableRowActions row={row} />,
+  },
+  {
+    id: "completed",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Complete" />
+    ),
+    cell: ({ row }) => <CompleteTaskButton taskId={row.original.id} />,
+    enableSorting: false,
+    enableHiding: false,
   },
 ];

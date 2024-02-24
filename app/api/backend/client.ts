@@ -31,3 +31,14 @@ export const postBackend = async <T>(
   });
   return data;
 };
+
+export const patchBackend = async <T>(
+  path: string,
+  body?: Record<string, unknown>
+) => {
+  const { data } = await axios.patch<T>(backendApiUrl(path), body || {}, {
+    headers,
+    withCredentials: true,
+  });
+  return data;
+};
