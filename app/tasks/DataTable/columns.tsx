@@ -7,8 +7,8 @@ import { Checkbox } from "@/app/components/ui/checkbox";
 import { statuses } from "./data";
 import { DataTableRowActions } from "./DataTableRowActions";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
-import { Button } from "@/app/components/ui/button";
 import CompleteTaskButton from "./CompleteTaskButton";
+import { format, parseISO } from "date-fns";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -82,8 +82,34 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    id: "Due Date",
+    accessorKey: "dueDate",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Due Date" />
+    ),
+    sortingFn: "datetime",
+    cell: ({ row }) => {
+      const dueDate = row.original.dueDate;
+
+      if (!dueDate) {
+        return (
+          <div className="flex items-center">
+            <span className="text-muted-foreground">No due date</span>
+          </div>
+        );
+      }
+
+      // Example: Format as 'February 24th, 2024'
+      const humanReadableDate = format(parseISO(dueDate), "MMMM do, yyyy");
+      return (
+        <div className="flex items-center">
+          <span>{humanReadableDate}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     id: "completed",
@@ -93,5 +119,9 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => <CompleteTaskButton taskId={row.original.id} />,
     enableSorting: false,
     enableHiding: false,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
