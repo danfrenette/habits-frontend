@@ -2,11 +2,20 @@
 
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { CalendarIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { DataTableFacetedFilter } from "./DataTableFacetedFilter";
 import { statuses } from "./data";
 import { DataTableViewOptions } from "./DataTableViewOptions";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/components/ui/popover";
+import { Calendar } from "@/app/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/app/lib/utils";
+import { useTaskTableContext } from "@/app/lib/contexts/TaskTableContext/TaskTableContext";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -15,6 +24,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const { dueDate, setDueDate } = useTaskTableContext();
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -28,6 +38,29 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-[240px] pl-3 text-left font-normal",
+                !dueDate && "text-muted-foreground"
+              )}
+            >
+              {dueDate ? format(dueDate, "PPP") : <span>Pick a date</span>}
+              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={dueDate}
+              onSelect={setDueDate}
+              disabled={(date) => date < new Date()}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}

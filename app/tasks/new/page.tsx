@@ -44,7 +44,6 @@ export default function Page() {
   });
 
   const onSubmit = (data: FormValues) => {
-    debugger;
     createTask.mutate(data, {
       onSuccess: () => {
         toast({

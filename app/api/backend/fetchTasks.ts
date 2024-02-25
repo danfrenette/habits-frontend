@@ -1,5 +1,10 @@
 import { Task } from "@/app/types/backend/Task";
 import { getBackend } from "./client";
 
-export const fetchTasks = async (userId: string) =>
-  getBackend<Task[]>(`users/${userId}/tasks`);
+type Params = {
+  userId: string;
+  dueDate: string;
+};
+
+export const fetchTasks = async (params: Params) =>
+  getBackend<Task[]>(`tasks`, { search: params });

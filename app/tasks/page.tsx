@@ -9,11 +9,16 @@ import { columns } from "./DataTable/columns";
 import { Button } from "../components/ui/button";
 import Link from "next/link";
 import { PlusIcon } from "@radix-ui/react-icons";
-// import { UserNav } from "./components/user-nav";
+import { formatISO } from "date-fns";
+import { useTaskTableContext } from "../lib/contexts/TaskTableContext/TaskTableContext";
 
 export default function Page() {
-  const { data: session } = useSession();
-  const { data: tasks, error } = useTasks(session?.user.id as string);
+  const userId = useSession().data?.user.id;
+  const { dueDate } = useTaskTableContext();
+  const { data: tasks, error } = useTasks({
+    userId,
+    dueDate: formatISO(dueDate),
+  });
 
   return (
     <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -21,7 +26,7 @@ export default function Page() {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
           <p className="text-muted-foreground">
-            Here&apos;s a list of your tasks for this month!
+            Here&apos;s a list of your tasks!
           </p>
         </div>
         <div className="flex items-center">
