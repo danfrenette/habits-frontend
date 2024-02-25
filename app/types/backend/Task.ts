@@ -6,3 +6,5 @@ export type Task = {
 };
 
 export type CreateTaskParams = Pick<Task, "title" | "dueDate">;
+
+export type UpdateTaskParams = Partial<Pick<Task, "status">>;

@@ -5,10 +5,11 @@ import { Resolver, useForm } from "react-hook-form";
 import { TaskForm } from "./TaskForm";
 import { toast } from "@/app/components/ui/use-toast";
 import { useCreateTask } from "@/app/lib/queries/useCreateTask";
+import { formatISO } from "date-fns";
 
 export type FormValues = {
   title: string;
-  dueDate?: Date;
+  dueDate?: string;
 };
 
 export default function Page() {
@@ -38,7 +39,7 @@ export default function Page() {
     resolver: customResolver,
     defaultValues: {
       title: "",
-      dueDate: new Date(),
+      dueDate: formatISO(new Date()),
     },
   });
 
