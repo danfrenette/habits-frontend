@@ -41,7 +41,7 @@ export default function Page() {
         <div className="flex items-center">
           <Button asChild>
             <Link href="/habits/new">
-              <PlusIcon />
+              <PlusIcon className="mr-1" />
               New Habit
             </Link>
           </Button>

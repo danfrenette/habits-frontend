@@ -1,8 +1,8 @@
 "use client";
 
-import { CalendarIcon, CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-import { UseFormReturn, useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 
 import { cn } from "@/app/lib/utils";
 import { Button } from "@/app/components/ui/button";
@@ -31,6 +31,10 @@ export function TaskForm({
   form: UseFormReturn<FormValues, any, FormValues>;
   onSubmit: (data: any) => void;
 }) {
+  const dueDate = form.getValues().dueDate;
+  const today = new Date();
+  const selectedDay = dueDate ? new Date(dueDate) : today;
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -61,16 +65,9 @@ export function TaskForm({
                   <FormControl>
                     <Button
                       variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
+                      className={"w-[240px] pl-3 text-left font-normal"}
                     >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
+                      {format(selectedDay, "PPP")}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
@@ -78,9 +75,9 @@ export function TaskForm({
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={field.value}
+                    selected={selectedDay}
                     onSelect={field.onChange}
-                    disabled={(date) => date < new Date()}
+                    disabled={{ before: today }}
                     initialFocus
                   />
                 </PopoverContent>

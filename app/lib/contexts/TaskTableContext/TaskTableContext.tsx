@@ -9,13 +9,16 @@ import React, {
 } from "react";
 
 interface TaskTableContextType {
-  dueDate: Date;
-  setDueDate: Dispatch<SetStateAction<Date>>;
+  dueDate: Date | undefined;
+  setDueDate: Dispatch<SetStateAction<Date | undefined>>;
 }
 
 const TaskTableContext = createContext<TaskTableContextType | undefined>({
   dueDate: new Date(),
-  setDueDate: () => {},
+  setDueDate: (): SetStateAction<Date> => {
+    const today = new Date();
+    return today;
+  },
 });
 
 export const useTaskTableContext = () => {
@@ -27,7 +30,7 @@ export const useTaskTableContext = () => {
 };
 
 export const TaskTableProvider = ({ children }: { children: ReactNode }) => {
-  const [dueDate, setDueDate] = useState<Date>(new Date());
+  const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
 
   return (
     <TaskTableContext.Provider value={{ dueDate, setDueDate }}>

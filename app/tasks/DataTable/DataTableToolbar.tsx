@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from "@/app/components/ui/popover";
 import { Calendar } from "@/app/components/ui/calendar";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { cn } from "@/app/lib/utils";
 import { useTaskTableContext } from "@/app/lib/contexts/TaskTableContext/TaskTableContext";
 
@@ -25,6 +25,8 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const { dueDate, setDueDate } = useTaskTableContext();
+  const today = new Date();
+  const selectedDay = dueDate ? new Date(dueDate) : today;
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -42,21 +44,18 @@ export function DataTableToolbar<TData>({
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}
-              className={cn(
-                "w-[240px] pl-3 text-left font-normal",
-                !dueDate && "text-muted-foreground"
-              )}
+              className={"w-[240px] pl-3 text-left font-normal"}
             >
-              {dueDate ? format(dueDate, "PPP") : <span>Pick a date</span>}
+              {format(selectedDay, "PPP")}
               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
-              selected={dueDate}
+              selected={selectedDay}
               onSelect={setDueDate}
-              disabled={(date) => date < new Date()}
+              disabled={{ before: today }}
               initialFocus
             />
           </PopoverContent>

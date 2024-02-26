@@ -15,9 +15,11 @@ import { useTaskTableContext } from "../lib/contexts/TaskTableContext/TaskTableC
 export default function Page() {
   const userId = useSession().data?.user.id;
   const { dueDate } = useTaskTableContext();
+  const today = new Date();
+  const paramsDueDate = dueDate ? formatISO(dueDate) : formatISO(today);
   const { data: tasks, error } = useTasks({
     userId,
-    dueDate: formatISO(dueDate),
+    dueDate: paramsDueDate,
   });
 
   return (
