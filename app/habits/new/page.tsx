@@ -2,7 +2,6 @@
 
 import { Separator } from "@/app/components/ui/separator";
 import { GeneralHabitInfo } from "./GeneralHabitInfo";
-import { useHabitForm } from "@/app/lib/contexts/HabitFormContext/HabitFormContext";
 import { CueForm } from "./CueForm";
 import { ResponseForm } from "./ResponseForm";
 import { Resolver, useForm } from "react-hook-form";
@@ -11,10 +10,11 @@ import { useSession } from "next-auth/react";
 import { toast } from "@/app/components/ui/use-toast";
 import { CueType } from "@/app/types/backend/Habit";
 import { TimeValue } from "react-aria";
+import { useSideNav } from "@/app/lib/contexts/SideNavContext/SideNavContext";
 
 export default function Page() {
   const { data: session } = useSession();
-  const { currentSection } = useHabitForm();
+  const { currentSection } = useSideNav();
   const createHabit = useCreateHabit(session?.user.id as string);
 
   interface FormValues {
@@ -63,7 +63,6 @@ export default function Page() {
   });
 
   const onSubmit = (data: FormValues) => {
-    debugger;
     createHabit.mutate(data, {
       onSuccess: () => {
         toast({

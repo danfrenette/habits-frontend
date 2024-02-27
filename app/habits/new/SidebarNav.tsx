@@ -1,14 +1,11 @@
 "use client";
 
-import {
-  FormSection,
-  useHabitForm,
-} from "@/app/lib/contexts/HabitFormContext/HabitFormContext";
+import { useSideNav } from "@/app/lib/contexts/SideNavContext/SideNavContext";
 import { Button, buttonVariants } from "../../components/ui/button";
 import { cn } from "@/app/lib/utils";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  formSections: FormSection[];
+  formSections: string[];
 }
 
 export function SidebarNav({
@@ -16,7 +13,7 @@ export function SidebarNav({
   formSections,
   ...props
 }: SidebarNavProps) {
-  const { currentSection, goToSection } = useHabitForm();
+  const { currentSection, goToSection } = useSideNav();
 
   return (
     <nav

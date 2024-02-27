@@ -2,31 +2,22 @@ import { Metadata } from "next";
 
 import { Separator } from "@/app/components/ui/separator";
 import { SidebarNav } from "@/app/habits/new/SidebarNav";
-import {
-  FormSection,
-  HabitFormProvider,
-} from "@/app/lib/contexts/HabitFormContext/HabitFormContext";
+import { SideNavProvider } from "@/app/lib/contexts/SideNavContext/SideNavContext";
 
 export const metadata: Metadata = {
   title: "Forms",
   description: "Advanced form example using react-hook-form and Zod.",
 };
 
-const formSections: FormSection[] = [
-  "General",
-  "Cue",
-  "Craving",
-  "Response",
-  "Reward",
-];
+const formSections = ["General", "Cue", "Craving", "Response", "Reward"];
 
-interface SettingsLayoutProps {
+interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function SettingsLayout({ children }: SettingsLayoutProps) {
+export default function Layout({ children }: LayoutProps) {
   return (
-    <HabitFormProvider>
+    <SideNavProvider>
       <div className="space-y-6 p-10 pb-16 md:block">
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">New Habit</h2>
@@ -42,6 +33,6 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <div className="flex-1 lg:max-w-2xl">{children}</div>
         </div>
       </div>
-    </HabitFormProvider>
+    </SideNavProvider>
   );
 }
