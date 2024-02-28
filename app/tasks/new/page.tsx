@@ -6,15 +6,21 @@ import { TaskForm } from "./TaskForm";
 import { toast } from "@/app/components/ui/use-toast";
 import { useCreateTask } from "@/app/lib/queries/useCreateTask";
 import { formatISO } from "date-fns";
+import { useSideNav } from "@/app/lib/contexts/SideNavContext/SideNavContext";
+import { RecurrenceFormValues } from "@/app/components/RecurrenceForm/RecurrenceForm";
 
-export type FormValues = {
+type TaskFormValues = {
   title: string;
   dueDate?: string;
+  recurring: boolean;
 };
+
+export type FormValues = TaskFormValues & RecurrenceFormValues;
 
 export default function Page() {
   const { data: session } = useSession();
   const createTask = useCreateTask(session?.user.id as string);
+  const { currentSection } = useSideNav();
 
   const validateTitle = (title: string): string | null => {
     if (!title) return "Title is required";
@@ -36,10 +42,13 @@ export default function Page() {
   };
 
   const form = useForm<FormValues>({
+    // need to split this out too
     resolver: customResolver,
     defaultValues: {
       title: "",
       dueDate: formatISO(new Date()),
+      recurring: false,
+      byDay: [],
     },
   });
 
@@ -60,33 +69,25 @@ export default function Page() {
     });
   };
 
+  const renderSection = () => {
+    switch (currentSection) {
+      case "General":
+        return <TaskForm form={form} onSubmit={onSubmit} />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="space-y-6 p-10 pb-16 block">
-      <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">New Task</h2>
-        <p className="text-muted-foreground">
-          Create a new task to be displayed in the task table.
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-medium">General Information</h3>
+        <p className="text-sm text-muted-foreground">
+          Basic information about your new task.
         </p>
       </div>
-      <Separator className="my-6" />
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        {/* <aside className="-mx-4 lg:w-1/5">
-          sideeee
-          <SidebarNav items={sidebarNavItems} />
-        </aside> */}
-        <div className="flex-1 lg:max-w-2xl">
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-medium">General</h3>
-              <p className="text-sm text-muted-foreground">
-                General information about the task.
-              </p>
-            </div>
-            <Separator />
-            <TaskForm form={form} onSubmit={onSubmit} />
-          </div>
-        </div>
-      </div>
+      <Separator />
+      {renderSection()}
     </div>
   );
 }
