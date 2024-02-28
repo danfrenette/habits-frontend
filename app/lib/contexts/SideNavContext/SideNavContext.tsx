@@ -16,8 +16,14 @@ export const useSideNav = () => {
   return context;
 };
 
-export const SideNavProvider = ({ children }: { children: ReactNode }) => {
-  const [currentSection, setCurrentSection] = useState("General");
+export const SideNavProvider = ({
+  children,
+  defaultSection,
+}: {
+  children: ReactNode;
+  defaultSection: string;
+}) => {
+  const [currentSection, setCurrentSection] = useState(defaultSection);
 
   const goToSection = (section: string) => {
     setCurrentSection(section);

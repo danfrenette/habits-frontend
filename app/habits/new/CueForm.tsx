@@ -26,7 +26,7 @@ import {
 import { TimePicker } from "@/app/components/ui/time-picker";
 import { cn } from "@/app/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import RecurrenceForm from "./RecurrenceForm";
+import RecurrenceForm from "../../components/RecurrenceForm/RecurrenceForm";
 
 export function CueForm({ form, onSubmit }: { form: any; onSubmit: any }) {
   const cueTypes = [

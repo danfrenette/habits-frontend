@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Advanced form example using react-hook-form and Zod.",
 };
 
-const formSections = ["General", "Cue", "Craving", "Response", "Reward"];
+const formSections = ["General"];
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,9 +20,9 @@ export default function Layout({ children }: LayoutProps) {
     <SideNavProvider defaultSection="General">
       <div className="space-y-6 p-10 pb-16 md:block">
         <div className="space-y-0.5">
-          <h2 className="text-2xl font-bold tracking-tight">New Habit</h2>
+          <h2 className="text-2xl font-bold tracking-tight">New Task</h2>
           <p className="text-muted-foreground">
-            Create a new habit to track your progress.
+            Create a new task to be displayed in the task table.
           </p>
         </div>
         <Separator className="my-6" />
