@@ -1,2 +1,2 @@
-import { GoogleSignInButton } from "./SignInButtons";
-export { GoogleSignInButton };
+import { GoogleSignInButton, SignOutButton } from "./SignInButtons";
+export { GoogleSignInButton, SignOutButton };
