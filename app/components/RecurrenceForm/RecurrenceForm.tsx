@@ -247,9 +247,9 @@ const RecurrenceForm = ({ form }: { form: any }) => {
                       variant={"outline"}
                       className={"w-[240px] pl-3 text-left font-normal"}
                     >
-                      {frequency === "MONTHLY"
-                        ? "Day of the month"
-                        : "Day and month of the year"}
+                      {frequency === RRule.MONTHLY.toString()
+                        ? "Days of the Month"
+                        : "Days and Month of the Year"}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
@@ -257,6 +257,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="multiple"
+                    selected={field.value}
                     onSelect={field.onChange}
                     initialFocus
                   />
