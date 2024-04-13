@@ -116,7 +116,6 @@ const RecurrenceForm = ({ form }: { form: any }) => {
     ] = rruleFields;
     const freq = frequency;
     const byweekday = byWeekday;
-    // const byweekday = byWeekday.map((day: string) => RRule[day]);
     const bymonthday = byMonthDay.map((day: Date) => day.getDate());
 
     const rule = new RRule({
@@ -126,7 +125,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
       byweekday,
       bymonthday,
       dtstart: startDate,
-      // until, // the value works but sending this breaks the ruby library
+      until,
     });
 
     form.setValue("rrule", rule.toString());
