@@ -7,8 +7,10 @@ import { toast } from "@/app/components/ui/use-toast";
 import { useCreateTask } from "@/app/lib/queries/useCreateTask";
 import { formatISO } from "date-fns";
 import { useSideNav } from "@/app/lib/contexts/SideNavContext/SideNavContext";
-import { RecurrenceFormValues } from "@/app/components/RecurrenceForm/RecurrenceForm";
-import { RRule } from "rrule";
+import {
+  RecurrenceFormValues,
+  recurrenceFormValues,
+} from "@/app/components/RecurrenceForm/RecurrenceForm";
 
 type TaskFormValues = {
   title: string;
@@ -46,17 +48,12 @@ export default function Page() {
   };
 
   const form = useForm<FormValues>({
-    // need to split this out too
     resolver: customResolver,
     defaultValues: {
       title: "",
       dueDate: formatISO(new Date()),
       recurring: false,
-      byWeekday: [],
-      byMonthDay: [],
-      frequency: RRule.DAILY,
-      until: null,
-      startDate: new Date(),
+      ...recurrenceFormValues,
     },
   });
 

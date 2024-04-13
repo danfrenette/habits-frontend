@@ -26,20 +26,27 @@ import { datetime, Frequency, RRule, RRuleSet, rrulestr, Weekday } from "rrule";
 
 export type RecurrenceFormValues = {
   rrule: string;
-  // startDate?: string;
+  startDate?: Date;
   frequency?: Frequency;
   byWeekday?: string[];
-  byMonthDay?: string[];
-  // byMonthDay?: string[];
-  // interval?: number;
-  // count?: number;
-  // untilDate?: string;
+  byMonthDay?: Date[];
+  interval?: number | null;
+  count?: number | null;
+  until?: string | null;
+};
+
+export const recurrenceFormValues = {
+  rrule: "",
+  startDate: new Date(),
+  frequency: RRule.DAILY,
+  byWeekday: [],
+  byMonthDay: [],
+  interval: null,
+  count: null,
+  until: null,
 };
 
 const RecurrenceForm = ({ form }: { form: any }) => {
-  // can this component easily extend the types of form that use it?
-  // fafruch.github.io/react-rrule-generator/
-
   const rruleFields = form.watch([
     "startDate",
     "frequency",
@@ -139,7 +146,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <Input type="text" {...field} />
+              <Input type="hidden" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
