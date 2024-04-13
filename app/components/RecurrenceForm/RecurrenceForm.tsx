@@ -234,7 +234,8 @@ const RecurrenceForm = ({ form }: { form: any }) => {
           ))}
         </div>
       )}
-      {(frequency === "MONTHLY" || frequency === "YEARLY") && (
+      {(frequency === RRule.MONTHLY.toString() ||
+        frequency === RRule.YEARLY.toString()) && (
         <FormField
           control={form.control}
           name="byMonthDay"
