@@ -36,11 +36,11 @@ export default function Page() {
     const errors: Record<string, { message: string }> = {};
     const { title } = values;
 
-    const nameError = validateTitle(title);
-    if (nameError) errors.name = { message: nameError };
+    const titleError = validateTitle(title);
+    if (titleError) errors.title = { message: titleError };
 
     return {
-      values: errors.name ? {} : values,
+      values: errors.title ? {} : values,
       errors: errors,
     };
   };
