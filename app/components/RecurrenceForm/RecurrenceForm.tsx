@@ -186,7 +186,10 @@ const RecurrenceForm = ({ form }: { form: any }) => {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Frequency</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select
+              onValueChange={field.onChange}
+              defaultValue={field.value.toString()}
+            >
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Frequency" />
