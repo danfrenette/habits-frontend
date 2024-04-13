@@ -15,27 +15,40 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { Toggle } from "@/app/components/ui/toggle";
-import React from "react";
+import React, { useEffect } from "react";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { format } from "date-fns";
+import { datetime, Frequency, RRule, RRuleSet, rrulestr, Weekday } from "rrule";
 
 export type RecurrenceFormValues = {
-  startDate?: string;
-  frequency?: string;
-  byDay?: string[];
+  rrule: string;
+  // startDate?: string;
+  frequency?: Frequency;
+  byWeekday?: string[];
   byMonthDay?: string[];
-  interval?: number;
-  count?: number;
+  // byMonthDay?: string[];
+  // interval?: number;
+  // count?: number;
+  // untilDate?: string;
 };
 
 const RecurrenceForm = ({ form }: { form: any }) => {
   // can this component easily extend the types of form that use it?
   // fafruch.github.io/react-rrule-generator/
 
+  const rruleFields = form.watch([
+    "startDate",
+    "frequency",
+    "byWeekday",
+    "byMonthDay",
+    "interval",
+    "count",
+    "until",
+  ]);
   const frequency = form.watch("frequency");
   const interval = form.watch("interval");
   const untilDate = form.watch("until");
@@ -45,30 +58,30 @@ const RecurrenceForm = ({ form }: { form: any }) => {
   const selectedStartDay = startDate ? new Date(startDate) : today;
   const ends = form.watch("endsOn");
   const days = [
-    { label: "Sunday", value: "SU" },
-    { label: "Monday", value: "MO" },
-    { label: "Tuesday", value: "TU" },
-    { label: "Wednesday", value: "WE" },
-    { label: "Thursday", value: "TH" },
-    { label: "Friday", value: "FR" },
-    { label: "Saturday", value: "SA" },
+    { label: "Sunday", value: RRule.SU },
+    { label: "Monday", value: RRule.MO },
+    { label: "Tuesday", value: RRule.TU },
+    { label: "Wednesday", value: RRule.WE },
+    { label: "Thursday", value: RRule.TH },
+    { label: "Friday", value: RRule.FR },
+    { label: "Saturday", value: RRule.SA },
   ];
   const frequencies = [
-    { label: "Daily", value: "DAILY" },
-    { label: "Weekly", value: "WEEKLY" },
-    { label: "Monthly", value: "MONTHLY" },
-    { label: "Yearly", value: "YEARLY" },
+    { label: "Daily", value: RRule.DAILY },
+    { label: "Weekly", value: RRule.WEEKLY },
+    { label: "Monthly", value: RRule.MONTHLY },
+    { label: "Yearly", value: RRule.YEARLY },
   ];
 
   const intervalLabel = () => {
     switch (frequency) {
-      case "DAILY":
+      case RRule.DAILY.toString():
         return "Days";
-      case "WEEKLY":
+      case RRule.WEEKLY.toString():
         return "Weeks";
-      case "MONTHLY":
+      case RRule.MONTHLY.toString():
         return "Months";
-      case "YEARLY":
+      case RRule.YEARLY.toString():
         return "Years";
       default:
         return "Interval";
@@ -77,20 +90,62 @@ const RecurrenceForm = ({ form }: { form: any }) => {
 
   const handleDayToggle = (e: React.MouseEvent<HTMLElement>) => {
     const dayName = e.currentTarget.textContent;
-    const day = days.find((d) => d.label === dayName)?.value;
+    const day = days.find(({ label }) => label === dayName)?.value;
+    const selectedWeekdays = form.getValues().byWeekday;
 
-    if (form.getValues().byDay.includes(day)) {
-      form.setValue(
-        "byDay",
-        form.getValues().byDay.filter((dayValue: string) => dayValue !== day)
+    if (selectedWeekdays.includes(day)) {
+      const newWeekdays = selectedWeekdays.filter(
+        (selectedDay: Weekday) => selectedDay !== day
       );
+
+      form.setValue("byWeekday", newWeekdays);
     } else {
-      form.setValue("byDay", [...form.getValues().byDay, day]);
+      form.setValue("byWeekday", [...form.getValues().byWeekday, day]);
     }
   };
 
+  useEffect(() => {
+    const [
+      startDate,
+      frequency,
+      byWeekday,
+      byMonthDay,
+      interval,
+      count,
+      until,
+    ] = rruleFields;
+    const freq = frequency;
+    const byweekday = byWeekday;
+    // const byweekday = byWeekday.map((day: string) => RRule[day]);
+    const bymonthday = byMonthDay.map((day: Date) => day.getDate());
+
+    const rule = new RRule({
+      freq,
+      interval,
+      count,
+      byweekday,
+      bymonthday,
+      dtstart: startDate,
+      // until, // the value works but sending this breaks the ruby library
+    });
+
+    form.setValue("rrule", rule.toString());
+  }, [rruleFields, form.setValue, form]);
+
   return (
     <>
+      <FormField
+        control={form.control}
+        name="rrule"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Input type="text" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
       <FormField
         control={form.control}
         name="startDate"
@@ -139,7 +194,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
               </FormControl>
               <SelectContent>
                 {frequencies.map(({ label, value }) => (
-                  <SelectItem key={value} value={value}>
+                  <SelectItem key={value} value={value.toString()}>
                     {label}
                   </SelectItem>
                 ))}
@@ -152,13 +207,13 @@ const RecurrenceForm = ({ form }: { form: any }) => {
           </FormItem>
         )}
       />
-      {frequency === "WEEKLY" && (
+      {frequency == RRule.WEEKLY && (
         <div className="flex flex-row">
           {days.map((day) => (
             <FormField
-              key={day.value}
+              key={day.value.toString()}
               control={form.control}
-              name="byDay"
+              name="byWeekday"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

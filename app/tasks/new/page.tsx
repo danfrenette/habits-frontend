@@ -8,11 +8,15 @@ import { useCreateTask } from "@/app/lib/queries/useCreateTask";
 import { formatISO } from "date-fns";
 import { useSideNav } from "@/app/lib/contexts/SideNavContext/SideNavContext";
 import { RecurrenceFormValues } from "@/app/components/RecurrenceForm/RecurrenceForm";
+import { RRule } from "rrule";
 
 type TaskFormValues = {
   title: string;
   dueDate?: string;
   recurring: boolean;
+  until: Date | null;
+  startDate: Date;
+  rrule: string;
 };
 
 export type FormValues = TaskFormValues & RecurrenceFormValues;
@@ -48,7 +52,11 @@ export default function Page() {
       title: "",
       dueDate: formatISO(new Date()),
       recurring: false,
-      byDay: [],
+      byWeekday: [],
+      byMonthDay: [],
+      frequency: RRule.DAILY,
+      until: null,
+      startDate: new Date(),
     },
   });
 
