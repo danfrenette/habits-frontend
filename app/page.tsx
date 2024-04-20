@@ -1,15 +1,12 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { SignOutButton } from "./components/SignInButtons/";
 
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
     <div>
       <h1>Home</h1>
-      <p>Welcome {session?.user.name}</p>
+      <p>Welcome, hopefully, idk sessions are up in the air right now</p>
       <SignOutButton />
     </div>
   );

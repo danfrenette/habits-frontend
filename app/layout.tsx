@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { getServerSession } from "next-auth";
-import SessionProvider from "./lib/contexts/SessionProvider";
 import TanstackQueryProvider from "./lib/contexts/TanstackQueryProvider";
 import { AuthenticationPage } from "./components/AuthenticationPage";
 import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider";
 import { Navbar } from "./components/Navbar";
 import { Toaster } from "./components/ui/toaster";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,10 +16,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased flex flex-row`}>
+      <body className="antialiased flex flex-row">
         <TanstackQueryProvider>
           <ThemeProvider
             attribute="class"
@@ -32,12 +26,10 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SessionProvider session={session}>
-              {!session && <AuthenticationPage />}
+            <AuthenticationPage />
 
-              {session && <Navbar>{children}</Navbar>}
-              <Toaster />
-            </SessionProvider>
+            {/* {session && <Navbar>{children}</Navbar>} */}
+            <Toaster />
           </ThemeProvider>
         </TanstackQueryProvider>
       </body>
