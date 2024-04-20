@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 import { Separator } from "@/app/components/ui/separator";
-import { SidebarNav } from "@/app/habits/new/SidebarNav";
 import { SideNavProvider } from "@/app/lib/contexts/SideNavContext/SideNavContext";
+import { SidebarNav } from "@/app/components/SidebarNav/SidebarNav";
 
 export const metadata: Metadata = {
   title: "Forms",

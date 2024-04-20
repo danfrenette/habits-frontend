@@ -1,26 +1,15 @@
-"use client";
-
-import { useSession } from "next-auth/react";
-import { useTasks } from "../lib/queries/useTasks";
-import ZeroState from "../components/ZeroState";
-import { DataTable } from "./DataTable/DataTable";
-
-import { columns } from "./DataTable/columns";
-import { Button } from "../components/ui/button";
 import Link from "next/link";
+import { Button } from "../components/ui/button";
+import TasksTable from "./TasksTable/TasksTable";
 import { PlusIcon } from "@radix-ui/react-icons";
-import { formatISO } from "date-fns";
-import { useTaskTableContext } from "../lib/contexts/TaskTableContext/TaskTableContext";
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function Page() {
-  const userId = useSession().data?.user.id;
-  const { dueDate } = useTaskTableContext();
-  const today = new Date();
-  const paramsDueDate = dueDate ? formatISO(dueDate) : formatISO(today);
-  const { data: tasks, error } = useTasks({
-    userId,
-    dueDate: paramsDueDate,
-  });
+export default async function Page() {
+  const user = await currentUser();
+
+  if (!user) {
+    return <div>You are not logged in</div>;
+  }
 
   return (
     <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -40,11 +29,7 @@ export default function Page() {
           </Button>
         </div>
       </div>
-      {tasks?.length ? (
-        <DataTable columns={columns} data={tasks} />
-      ) : (
-        <ZeroState>You don&apos;t have any tasks</ZeroState>
-      )}
+      <TasksTable user={user} />
     </div>
   );
 }

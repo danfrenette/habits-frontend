@@ -1,12 +1,20 @@
-"use client";
+import { SignOutButton } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
-import { SignOutButton } from "./components/SignInButtons/";
+export default async function Home() {
+  const user = await currentUser();
 
-export default function Home() {
+  if (!user) {
+    return <div>You are not logged in</div>;
+  }
+
   return (
     <div>
       <h1>Home</h1>
-      <p>Welcome, hopefully, idk sessions are up in the air right now</p>
+
+      <div>
+        <p>Welcome {user.fullName}</p>
+      </div>
       <SignOutButton />
     </div>
   );
