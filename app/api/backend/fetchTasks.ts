@@ -7,6 +7,6 @@ type Params = {
   userId: string;
 };
 
-export const fetchTasks = async (params: Params)<Task[]> => {
+export const fetchTasks = async (params: Params) => {
   getBackend<Task[]>(`tasks`, { search: params });
 };

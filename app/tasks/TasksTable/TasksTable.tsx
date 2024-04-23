@@ -1,19 +1,22 @@
+"use client";
+
 import ZeroState from "@/app/components/ZeroState";
-import { User } from "@clerk/nextjs/server";
 import { columns } from "../DataTable/columns";
 import { DataTable } from "../DataTable/DataTable";
 import { formatISO } from "date-fns";
 import { useTaskTableContext } from "@/app/lib/contexts/TaskTableContext/TaskTableContext";
 import { useTasks } from "@/app/lib/queries/useTasks";
 
-export default function TasksTable({ user }: { user: User }) {
+export default function TasksTable({ userId }: { userId: string }) {
   const { dueDate } = useTaskTableContext();
   const today = new Date();
   const paramsDueDate = dueDate ? formatISO(dueDate) : formatISO(today);
-  const { data: tasks, error } = useTasks({
-    userId: user.id,
+  const { data: tasksFromAPI, error } = useTasks({
+    userId: userId,
     dueDate: paramsDueDate,
   });
+
+  const tasks = tasksFromAPI || [];
 
   return (
     <>

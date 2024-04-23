@@ -1,8 +1,7 @@
 "use client";
 
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
-import { UseFormReturn } from "react-hook-form";
+import { format, formatISO } from "date-fns";
 
 import { Button } from "@/app/components/ui/button";
 import { Calendar } from "@/app/components/ui/calendar";
@@ -23,15 +22,62 @@ import {
 } from "@/app/components/ui/popover";
 import { FormValues } from "./page";
 import { Switch } from "@/app/components/ui/switch";
-import RecurrenceForm from "@/app/components/RecurrenceForm/RecurrenceForm";
+import RecurrenceForm, {
+  recurrenceFormValues,
+} from "@/app/components/RecurrenceForm/RecurrenceForm";
+import { useCreateTask } from "@/app/lib/queries/useCreateTask";
+import { Resolver, useForm } from "react-hook-form";
+import { toast } from "@/app/components/ui/use-toast";
 
-export function TaskForm({
-  form,
-  onSubmit,
-}: {
-  form: UseFormReturn<FormValues, any, FormValues>;
-  onSubmit: (data: any) => void;
-}) {
+export function TaskForm({ userId }: { userId: string }) {
+  const createTask = useCreateTask(userId);
+
+  const validateTitle = (title: string): string | null => {
+    if (!title) return "Title is required";
+    if (title.length < 3) return "Title must be at least 3 characters long";
+    return null;
+  };
+
+  const customResolver: Resolver<FormValues> = async (values) => {
+    const errors: Record<string, { message: string }> = {};
+    const { title } = values;
+
+    const titleError = validateTitle(title);
+    if (titleError) errors.title = { message: titleError };
+
+    return {
+      values: errors.title ? {} : values,
+      errors: errors,
+    };
+  };
+
+  const form = useForm<FormValues>({
+    resolver: customResolver,
+    defaultValues: {
+      title: "",
+      dueDate: formatISO(new Date()),
+      recurring: false,
+      ...recurrenceFormValues,
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    createTask.mutate(data, {
+      onSuccess: () => {
+        toast({
+          title: "you submitted the following values:",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">
+                {JSON.stringify(data, null, 2)}
+              </code>
+            </pre>
+          ),
+        });
+      },
+    });
+  };
+
   const dueDate = form.getValues().dueDate;
   const today = new Date();
   const selectedDay = dueDate ? new Date(dueDate) : today;

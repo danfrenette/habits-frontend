@@ -29,7 +29,7 @@ export default async function Page() {
           </Button>
         </div>
       </div>
-      <TasksTable user={user} />
+      <TasksTable userId={user.id} />
     </div>
   );
 }
