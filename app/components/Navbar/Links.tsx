@@ -11,10 +11,6 @@ export default function Links({
   const pathname = usePathname();
   const links = [
     {
-      name: "Habits",
-      href: "/habits",
-    },
-    {
       name: "Tasks",
       href: "/tasks",
     },
