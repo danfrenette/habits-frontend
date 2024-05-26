@@ -11,12 +11,14 @@ export default function TasksTable({ userId }: { userId: string }) {
   const { dueDate } = useTaskTableContext();
   const today = new Date();
   const paramsDueDate = dueDate ? formatISO(dueDate) : formatISO(today);
-  const { data: tasksFromAPI, error } = useTasks({
-    userId: userId,
+  const { data: tasks, isLoading } = useTasks({
+    userId,
     dueDate: paramsDueDate,
   });
 
-  const tasks = tasksFromAPI || [];
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
