@@ -91,7 +91,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
       case RRule.YEARLY.toString():
         return "Years";
       default:
-        return "Interval";
+        return "Days";
     }
   };
 
@@ -124,6 +124,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
     const freq = frequency;
     const byweekday = byWeekday;
     const bymonthday = byMonthDay.map((day: Date) => day.getDate());
+    const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     const rule = new RRule({
       freq,
@@ -133,6 +134,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
       bymonthday,
       dtstart: startDate,
       until,
+      tzid,
     });
 
     form.setValue("rrule", rule.toString());
