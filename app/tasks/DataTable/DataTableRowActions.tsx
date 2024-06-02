@@ -7,27 +7,31 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
 
-import { labels } from "./data";
 import { Button } from "@/app/components/ui/button";
+import { useDeleteTask } from "@/app/lib/queries/useDeleteTask";
+import { useCallback } from "react";
+import { Task } from "@/app/types/backend/Task";
 
-interface DataTableRowActionsProps<TData> {
+interface DataTableRowActionsProps<TData extends Task> {
   row: Row<TData>;
 }
 
-export function DataTableRowActions<TData>({
+export function DataTableRowActions<TData extends Task>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const task = {};
+  const taskId = row.original.id;
+  const { mutate: deleteTask } = useDeleteTask(taskId);
+
+  const onDelete = useCallback(() => {
+    if (confirm("Are you sure you want to delete this attachment?")) {
+      deleteTask();
+    }
+  }, [deleteTask]);
 
   return (
     <DropdownMenu>
@@ -56,9 +60,9 @@ export function DataTableRowActions<TData>({
               ))}
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
-        </DropdownMenuSub> */}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        </DropdownMenuSub>
+        <DropdownMenuSeparator /> */}
+        <DropdownMenuItem onClick={onDelete}>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

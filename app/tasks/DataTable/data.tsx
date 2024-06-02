@@ -26,8 +26,8 @@ export const labels = [
 
 export const statuses = [
   {
-    value: "pending",
-    label: "Pending",
+    value: "active",
+    label: "Active",
     icon: CircleIcon,
   },
   {

@@ -42,3 +42,15 @@ export const patchBackend = async <T>(
   });
   return data;
 };
+
+export const deleteBackend = async <T>(
+  path: string,
+  body?: Record<string, unknown>
+) => {
+  const { data } = await axios.delete<T>(backendApiUrl(path), {
+    headers,
+    withCredentials: true,
+    data: body,
+  });
+  return data;
+};
