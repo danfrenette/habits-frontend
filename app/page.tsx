@@ -1,4 +1,5 @@
 import { currentUser } from "@clerk/nextjs/server";
+import { TaskCompletions } from "./components/TaskCompletions";
 
 export default async function Home() {
   const user = await currentUser();
@@ -12,8 +13,9 @@ export default async function Home() {
       <h1>Home</h1>
 
       <div>
-        <p>Welcome {user.fullName}</p>
+        <p>Welcome {user.fullName}, here are your tasks for today</p>
       </div>
+      <TaskCompletions userId={user.id} />
     </div>
   );
 }

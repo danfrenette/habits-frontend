@@ -17,8 +17,8 @@ export const labels = [
 
 export const statuses = [
   {
-    value: "active",
-    label: "Active",
+    value: "incomplete",
+    label: "Incomplete",
     icon: CircleIcon,
   },
   {
