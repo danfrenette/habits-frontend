@@ -3,7 +3,8 @@
 import Image from "next/image";
 import googleLogo from "@/public/google.svg";
 import { Button } from "../ui/button";
-import { useSignIn } from "@clerk/nextjs";
+import { SignOutButton, useSignIn } from "@clerk/nextjs";
+import { Cross1Icon } from "@radix-ui/react-icons";
 
 export function GoogleSignInButton() {
   const { signIn, isLoaded } = useSignIn();
@@ -27,6 +28,13 @@ export function GoogleSignInButton() {
   );
 }
 
-export function SignOutButton() {
-  return <Button>Sign Out</Button>;
+export function SignOut() {
+  return (
+    <SignOutButton>
+      <Button variant="outline" size="icon">
+        <Cross1Icon className="h-[1.2rem] w-[1.2rem]" />
+        <span className="sr-only">Sign Out</span>
+      </Button>
+    </SignOutButton>
+  );
 }

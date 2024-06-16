@@ -1,5 +1,4 @@
-import { SignOutButton } from "@clerk/nextjs";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
   const user = await currentUser();
@@ -15,7 +14,6 @@ export default async function Home() {
       <div>
         <p>Welcome {user.fullName}</p>
       </div>
-      <SignOutButton />
     </div>
   );
 }
