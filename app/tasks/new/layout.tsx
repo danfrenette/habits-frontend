@@ -18,7 +18,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <SideNavProvider defaultSection="General">
-      <div className="space-y-6 p-10 pb-16 md:block">
+      <div className="space-y-6 md:block">
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">New Task</h2>
           <p className="text-muted-foreground">

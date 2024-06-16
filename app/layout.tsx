@@ -27,7 +27,9 @@ export default async function RootLayout({
               </SignedOut>
 
               <SignedIn>
-                <Navbar>{children}</Navbar>
+                <Navbar>
+                  <div className="p-12">{children}</div>
+                </Navbar>
               </SignedIn>
               <Toaster />
             </ClerkProvider>
