@@ -7,6 +7,7 @@ import { Checkbox } from "@/app/components/ui/checkbox";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
 import { format, parseISO } from "date-fns";
 import { Button } from "../ui/button";
+import { CompleteTaskCompletionButton } from ".";
 
 export const columns: ColumnDef<TaskCompletion>[] = [
   {
@@ -88,7 +89,7 @@ export const columns: ColumnDef<TaskCompletion>[] = [
       <DataTableColumnHeader column={column} title="Complete" />
     ),
     cell: ({ row }) => (
-      <Button onClick={() => console.log(row.original.id)}>Complete</Button>
+      <CompleteTaskCompletionButton taskCompletion={row.original} />
     ),
     enableSorting: false,
     enableHiding: false,

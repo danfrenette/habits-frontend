@@ -60,9 +60,6 @@ export default function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const toggleComplete = (taskId: string) => {
-    console.log("Task completed:", taskId);
-  };
   return (
     <div className="space-y-4">
       <div className="rounded-md border">

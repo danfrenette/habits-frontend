@@ -1,3 +1,4 @@
 import DataTable from "./DataTable";
 import TaskCompletions from "./TaskCompletions";
-export { TaskCompletions, DataTable };
+import CompleteTaskCompletionButton from "./CompleteTaskCompletionButton";
+export { TaskCompletions, DataTable, CompleteTaskCompletionButton };

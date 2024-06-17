@@ -1,5 +1,7 @@
-import { CreateTaskParams, Task } from "@/app/types/backend/Task";
+import { Task } from "@/app/types/backend/Task";
 import { postBackend } from "./client";
+
+export type CreateTaskParams = Pick<Task, "title" | "dueDate">;
 
 export const createTask = async ({
   userId,
