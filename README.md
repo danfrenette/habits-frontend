@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Habits Frontend
+
+## Overview
+Habits Frontend is a Next.js application that interfaces with the Habits API
+backend. It allows users to manage their to-do tasks, schedule them, and set
+recurring tasks. The application uses TailwindCSS and Shadcn-UI for styling,
+Tanstack Query for data fetching, PNPM for package management, and Clerk for
+user authentication.
+
+## Features
+- User authentication with Clerk
+- Manage to-do tasks: create, read, update, and delete
+- Schedule tasks with specific dates and times
+- Recurring tasks using RRule
+- Responsive and modern UI with TailwindCSS and Shadcn-UI
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 16.x or higher
+- PNPM
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/danfrenette/habits-frontend.git
+   cd habits-frontend
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies using PNPM:
+   ```bash
+   pnpm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+   Create a `.env.local` file in the root of your project and add the necessary environment variables:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:3000/api
+   NEXT_PUBLIC_CLERK_FRONTEND_API=<your_clerk_frontend_api>
+   CLERK_API_KEY=<your_clerk_api_key>
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. Start the development server:
+   ```bash
+   pnpm dev
+   ```
 
-## Learn More
+### Styling
+The application uses TailwindCSS for utility-first styling and Shadcn-UI for pre-built components.
 
-To learn more about Next.js, take a look at the following resources:
+- **TailwindCSS**: Configure TailwindCSS in `tailwind.config.js`.
+- **Shadcn-UI**: Import and use Shadcn-UI components as needed.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Data Fetching
+Tanstack Query is used for efficient data fetching and state management.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Configure queries in the `hooks` directory, e.g., `useTodos.js`.
 
-## Deploy on Vercel
+### User Authentication
+Clerk is used for user authentication.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Set up Clerk in `_app.js` and manage authentication flows accordingly.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Usage
+This frontend application is designed to work seamlessly with the Habits API backend. Ensure the backend is running and accessible at the URL specified in your `.env.local` file.
+
+## Contributing
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -am 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Create a new Pull Request.
+
+## Contact
+For any inquiries, please [send me an email](mailto:dan.r.frenette@gmail.com).
