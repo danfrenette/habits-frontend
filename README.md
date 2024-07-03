@@ -1,5 +1,19 @@
 # Habits Frontend
 
+## About This Project
+This project is a hobby app, created to explore and demonstrate my skills and
+familiarity NEXT js, React, Tailwindcss, and other frontend technologies. While
+it showcases my abilities and understanding of the technologies used, it does
+not necessarily reflect the thoroughness or polish of a final production-ready
+application.
+
+The primary goal of this project is to provide a playground for learning and
+experimentation, and as such, some areas may not be fully optimized or
+feature-complete. I hope it offers insight into my development process and the
+tools I enjoy working with.
+
+Thank you for checking out my project!
+
 ## Overview
 Habits Frontend is a Next.js application that interfaces with the Habits API
 backend. It allows users to manage their to-do tasks, schedule them, and set
