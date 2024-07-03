@@ -28,8 +28,10 @@ import RecurrenceForm, {
 import { useCreateTask } from "@/app/lib/queries/useCreateTask";
 import { Resolver, useForm } from "react-hook-form";
 import { toast } from "@/app/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export function TaskForm({ userId }: { userId: string }) {
+  const router = useRouter();
   const createTask = useCreateTask(userId);
 
   const validateTitle = (title: string): string | null => {
@@ -74,6 +76,7 @@ export function TaskForm({ userId }: { userId: string }) {
             </pre>
           ),
         });
+        router.push("/tasks");
       },
     });
   };
