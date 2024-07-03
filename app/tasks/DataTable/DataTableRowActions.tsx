@@ -28,7 +28,7 @@ export function DataTableRowActions<TData extends Task>({
   const { mutate: deleteTask } = useDeleteTask(taskId);
 
   const onDelete = useCallback(() => {
-    if (confirm("Are you sure you want to delete this attachment?")) {
+    if (confirm("Are you sure you want to delete this task?")) {
       deleteTask();
     }
   }, [deleteTask]);
@@ -45,23 +45,10 @@ export function DataTableRowActions<TData extends Task>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {/* <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuSeparator /> */}
+        <DropdownMenuItem disabled>Edit</DropdownMenuItem>
+        <DropdownMenuItem disabled>Make a copy</DropdownMenuItem>
+        <DropdownMenuItem disabled>Favorite</DropdownMenuItem>
+
         <DropdownMenuItem onClick={onDelete}>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
