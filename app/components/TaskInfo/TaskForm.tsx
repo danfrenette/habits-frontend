@@ -20,17 +20,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/ui/popover";
-import { FormValues } from "./page";
+import { FormValues } from "../../tasks/new/page";
 import { Switch } from "@/app/components/ui/switch";
 import RecurrenceForm, {
+  RecurrenceFormValues,
   recurrenceFormValues,
 } from "@/app/components/RecurrenceForm/RecurrenceForm";
 import { useCreateTask } from "@/app/lib/queries/useCreateTask";
 import { Resolver, useForm } from "react-hook-form";
 import { toast } from "@/app/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { Task } from "@/app/types/backend/Task";
+import { RRule, rrulestr } from "rrule";
 
-export function TaskForm({ userId }: { userId: string }) {
+type Props = {
+  userId: string;
+  task?: Task;
+  rruleOptions?: RecurrenceFormValues;
+};
+
+export function TaskForm({ userId, task, rruleOptions }: Props) {
   const router = useRouter();
   const createTask = useCreateTask(userId);
 
@@ -53,14 +62,23 @@ export function TaskForm({ userId }: { userId: string }) {
     };
   };
 
+  const defaultTaskValues = {
+    title: "",
+    dueDate: formatISO(new Date()),
+    recurring: false,
+  };
+
+  const defaultRecurrenceValues = rruleOptions || recurrenceFormValues;
+
+  const defaultValues: FormValues = {
+    ...defaultTaskValues,
+    ...task,
+    ...defaultRecurrenceValues,
+  };
+
   const form = useForm<FormValues>({
     resolver: customResolver,
-    defaultValues: {
-      title: "",
-      dueDate: formatISO(new Date()),
-      recurring: false,
-      ...recurrenceFormValues,
-    },
+    defaultValues,
   });
 
   const onSubmit = (data: FormValues) => {

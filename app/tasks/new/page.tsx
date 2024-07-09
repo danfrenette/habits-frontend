@@ -1,5 +1,5 @@
 import { Separator } from "@/app/components/ui/separator";
-import { TaskForm } from "./TaskForm";
+import { TaskForm } from "../../components/TaskInfo/TaskForm";
 import { RecurrenceFormValues } from "@/app/components/RecurrenceForm/RecurrenceForm";
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -7,7 +7,6 @@ type TaskFormValues = {
   title: string;
   dueDate?: string;
   recurring: boolean;
-  until: Date | null;
   startDate: Date;
   rrule: string;
 };

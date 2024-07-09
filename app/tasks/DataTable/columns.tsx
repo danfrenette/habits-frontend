@@ -9,6 +9,7 @@ import { DataTableRowActions } from "./DataTableRowActions";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
 import CompleteTaskButton from "./CompleteTaskButton";
 import { format, parseISO } from "date-fns";
+import Link from "next/link";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -43,12 +44,13 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       // add this once we have labels or categories
       // const label = labels.find((label) => label.value === row.original.label);
+      const { title, slug } = row.original;
 
       return (
         <div className="flex space-x-2">
           {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title")}
+            <Link href={`/tasks/${slug}`}>{title}</Link>
           </span>
         </div>
       );
