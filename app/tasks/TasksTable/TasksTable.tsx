@@ -20,6 +20,8 @@ export default function TasksTable({ userId }: { userId: string }) {
     return <div>Loading...</div>;
   }
 
+  console.log("tasks", tasks);
+
   return (
     <>
       {tasks?.length ? (

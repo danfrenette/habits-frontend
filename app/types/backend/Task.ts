@@ -3,4 +3,5 @@ export type Task = {
   title: string;
   status: "pending" | "completed";
   dueDate?: string;
+  slug: string;
 };
