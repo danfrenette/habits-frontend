@@ -1,4 +1,4 @@
-export type TaskCompletion = {
+export type TaskAssignment = {
   id: string;
   taskId: string;
   completedAt: string;

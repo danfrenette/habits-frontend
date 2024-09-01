@@ -2,14 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { TaskCompletion } from "@/app/types/backend/TaskCompletion";
+import { TaskAssignment } from "@/app/types/backend/TaskAssignment";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
 import { format, parseISO } from "date-fns";
 import { Button } from "../ui/button";
-import { CompleteTaskCompletionButton } from ".";
+import { CompleteTaskAssignmentButton } from ".";
 
-export const columns: ColumnDef<TaskCompletion>[] = [
+export const columns: ColumnDef<TaskAssignment>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -89,7 +89,7 @@ export const columns: ColumnDef<TaskCompletion>[] = [
       <DataTableColumnHeader column={column} title="Complete" />
     ),
     cell: ({ row }) => (
-      <CompleteTaskCompletionButton taskCompletion={row.original} />
+      <CompleteTaskAssignmentButton taskAssignment={row.original} />
     ),
     enableSorting: false,
     enableHiding: false,
