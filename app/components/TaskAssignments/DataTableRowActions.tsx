@@ -11,17 +11,17 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 
 import { Button } from "@/app/components/ui/button";
-import { TaskCompletion } from "@/app/types/backend/TaskCompletion";
+import { TaskAssignment } from "@/app/types/backend/TaskAssignment";
 import Link from "next/link";
 
-interface DataTableRowActionsProps<TData extends TaskCompletion> {
+interface DataTableRowActionsProps<TData extends TaskAssignment> {
   row: Row<TData>;
 }
 
-export function DataTableRowActions<TData extends TaskCompletion>({
+export function DataTableRowActions<TData extends TaskAssignment>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const taskCompletionId = row.original.id;
+  const taskAssignmentSlug = row.original.taskSlug;
 
   return (
     <DropdownMenu>
@@ -36,7 +36,7 @@ export function DataTableRowActions<TData extends TaskCompletion>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem>
-          <Link href={`/task_completion/${taskCompletionId}`}>View</Link>
+          <Link href={`/tasks/${taskAssignmentSlug}`}>View Task</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,5 +1,5 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { TaskCompletions } from "./components/TaskCompletions";
+import { TaskAssignments } from "./components/TaskAssignments";
 
 export default async function Home() {
   const user = await currentUser();
@@ -10,7 +10,7 @@ export default async function Home() {
 
   return (
     <div>
-      <TaskCompletions userId={user.id} />
+      <TaskAssignments userId={user.id} />
     </div>
   );
 }
