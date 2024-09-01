@@ -1,13 +1,17 @@
-"use client";
+import TaskInfo from "@/app/components/TaskInfo";
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function Page({ params }: { params: { taskSlug: string } }) {
+type Props = {
+  params: { taskSlug: string };
+};
+
+export default async function Page({ params }: Props) {
   const { taskSlug } = params;
-  console.log(params);
+  const user = await currentUser();
 
-  return (
-    <div>
-      <h1>Task slug: {taskSlug} </h1>
-      {/* Your task content goes here */}
-    </div>
-  );
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  return <TaskInfo userId={user.id} taskSlug={taskSlug} />;
 }

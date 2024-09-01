@@ -4,4 +4,7 @@ export type Task = {
   status: "pending" | "completed";
   dueDate?: string;
   slug: string;
+  recurrenceRule?: {
+    rrule: string;
+  };
 };

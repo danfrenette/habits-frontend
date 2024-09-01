@@ -22,14 +22,15 @@ import { Button } from "../ui/button";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { format } from "date-fns";
-import { datetime, Frequency, RRule, RRuleSet, rrulestr, Weekday } from "rrule";
+import { Frequency, RRule } from "rrule";
 
 export type RecurrenceFormValues = {
   rrule: string;
   startDate?: Date;
   frequency?: Frequency;
-  byWeekday?: string[];
+  byWeekday?: number[];
   byMonthDay?: Date[];
+  byYearDay?: Date[];
   interval?: number | null;
   count?: number | null;
   until?: string | null;
@@ -41,6 +42,7 @@ export const recurrenceFormValues = {
   frequency: RRule.DAILY,
   byWeekday: [],
   byMonthDay: [],
+  byYearDay: [],
   interval: null,
   count: null,
   until: null,
@@ -52,6 +54,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
     "frequency",
     "byWeekday",
     "byMonthDay",
+    "byYearDay",
     "interval",
     "count",
     "until",
@@ -65,13 +68,13 @@ const RecurrenceForm = ({ form }: { form: any }) => {
   const selectedStartDay = startDate ? new Date(startDate) : today;
   const ends = form.watch("endsOn");
   const days = [
-    { label: "Sunday", value: RRule.SU },
-    { label: "Monday", value: RRule.MO },
-    { label: "Tuesday", value: RRule.TU },
-    { label: "Wednesday", value: RRule.WE },
-    { label: "Thursday", value: RRule.TH },
-    { label: "Friday", value: RRule.FR },
-    { label: "Saturday", value: RRule.SA },
+    { label: "Sunday", value: RRule.SU.weekday },
+    { label: "Monday", value: RRule.MO.weekday },
+    { label: "Tuesday", value: RRule.TU.weekday },
+    { label: "Wednesday", value: RRule.WE.weekday },
+    { label: "Thursday", value: RRule.TH.weekday },
+    { label: "Friday", value: RRule.FR.weekday },
+    { label: "Saturday", value: RRule.SA.weekday },
   ];
   const frequencies = [
     { label: "Daily", value: RRule.DAILY },
@@ -81,14 +84,15 @@ const RecurrenceForm = ({ form }: { form: any }) => {
   ];
 
   const intervalLabel = () => {
-    switch (frequency) {
-      case RRule.DAILY.toString():
+    const freq = parseInt(frequency);
+    switch (freq) {
+      case RRule.DAILY:
         return "Days";
-      case RRule.WEEKLY.toString():
+      case RRule.WEEKLY:
         return "Weeks";
-      case RRule.MONTHLY.toString():
+      case RRule.MONTHLY:
         return "Months";
-      case RRule.YEARLY.toString():
+      case RRule.YEARLY:
         return "Years";
       default:
         return "Days";
@@ -102,7 +106,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
 
     if (selectedWeekdays.includes(day)) {
       const newWeekdays = selectedWeekdays.filter(
-        (selectedDay: Weekday) => selectedDay !== day
+        (selectedDay: number) => selectedDay !== day
       );
 
       form.setValue("byWeekday", newWeekdays);
@@ -117,24 +121,27 @@ const RecurrenceForm = ({ form }: { form: any }) => {
       frequency,
       byWeekday,
       byMonthDay,
+      byYearDay,
       interval,
       count,
       until,
     ] = rruleFields;
-    const freq = frequency;
-    const byweekday = byWeekday;
-    const bymonthday = byMonthDay.map((day: Date) => day.getDate());
-    const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const monthDays = byMonthDay.map((date: Date) => date.getDate());
+    const yearDays = byYearDay.map((date: Date) =>
+      Math.ceil((date - new Date(date.getFullYear(), 0, 1) + 1) / 86400000)
+    );
 
     const rule = new RRule({
-      freq,
+      freq: frequency,
       interval,
       count,
-      byweekday,
-      bymonthday,
+      byweekday: byWeekday,
+      bymonthday: monthDays,
+      byyearday: yearDays,
       dtstart: startDate,
       until,
-      tzid,
+      tzid: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
 
     form.setValue("rrule", rule.toString());
@@ -218,7 +225,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
           </FormItem>
         )}
       />
-      {frequency == RRule.WEEKLY && (
+      {parseInt(frequency) == RRule.WEEKLY && (
         <div className="flex flex-row">
           {days.map((day) => (
             <FormField
@@ -242,8 +249,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
           ))}
         </div>
       )}
-      {(frequency === RRule.MONTHLY.toString() ||
-        frequency === RRule.YEARLY.toString()) && (
+      {parseInt(frequency) === RRule.MONTHLY && (
         <FormField
           control={form.control}
           name="byMonthDay"
@@ -256,9 +262,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
                       variant={"outline"}
                       className={"w-[240px] pl-3 text-left font-normal"}
                     >
-                      {frequency === RRule.MONTHLY.toString()
-                        ? "Days of the Month"
-                        : "Days and Month of the Year"}
+                      Days of the Month
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
@@ -277,7 +281,39 @@ const RecurrenceForm = ({ form }: { form: any }) => {
           )}
         />
       )}
-      {frequency && (
+      {parseInt(frequency) === RRule.YEARLY && (
+        <FormField
+          control={form.control}
+          name="byYearDay"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={"w-[240px] pl-3 text-left font-normal"}
+                    >
+                      Days of the Year
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="multiple"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+      {frequency ? (
         <>
           <FormField
             control={form.control}
@@ -329,7 +365,7 @@ const RecurrenceForm = ({ form }: { form: any }) => {
             )}
           />
         </>
-      )}
+      ) : null}
       {ends === "COUNT" && (
         <FormField
           control={form.control}

@@ -20,7 +20,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/ui/popover";
-import { FormValues } from "./page";
+import { FormValues } from "../../tasks/new/page";
 import { Switch } from "@/app/components/ui/switch";
 import RecurrenceForm, {
   recurrenceFormValues,
@@ -29,8 +29,16 @@ import { useCreateTask } from "@/app/lib/queries/useCreateTask";
 import { Resolver, useForm } from "react-hook-form";
 import { toast } from "@/app/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { Task } from "@/app/types/backend/Task";
+import { RRule, rrulestr } from "rrule";
+import { start } from "repl";
 
-export function TaskForm({ userId }: { userId: string }) {
+type Props = {
+  userId: string;
+  task?: Task;
+};
+
+export function TaskForm({ userId, task }: Props) {
   const router = useRouter();
   const createTask = useCreateTask(userId);
 
@@ -53,14 +61,62 @@ export function TaskForm({ userId }: { userId: string }) {
     };
   };
 
+  const defaultTaskValues = {
+    title: "",
+    dueDate: formatISO(new Date()),
+    recurring: false,
+  };
+
+  const rruleString = task?.recurrenceRule?.rrule;
+  const existingRRule = rruleString ? rrulestr(rruleString) : new RRule();
+
+  const {
+    options: {
+      dtstart,
+      freq,
+      byweekday,
+      bymonthday,
+      byyearday,
+      interval,
+      count,
+      until,
+    } = {},
+  } = existingRRule;
+
+  const monthDates = bymonthday?.map(
+    (day) => new Date(new Date().getFullYear(), new Date().getMonth(), day)
+  );
+
+  const yearDates = byyearday?.map((day) => {
+    const startOfYear = new Date(new Date().getFullYear(), 0, 1); // January 1st
+
+    startOfYear.setDate(startOfYear.getDate() + day - 1);
+    return startOfYear;
+  });
+
+  const frequency = freq !== undefined && freq !== null ? freq : 3;
+
+  const defaultRecurrenceValues = {
+    rrule: task?.recurrenceRule?.rrule || "", // Use the existing rrule string, or an empty string if not available
+    startDate: dtstart || recurrenceFormValues.startDate,
+    frequency: frequency,
+    byWeekday: byweekday || recurrenceFormValues.byWeekday,
+    byMonthDay: monthDates || recurrenceFormValues.byMonthDay,
+    byYearDay: yearDates || recurrenceFormValues.byYearDay,
+    interval: interval || recurrenceFormValues.interval,
+    count: count || recurrenceFormValues.count,
+    until: until || recurrenceFormValues.until,
+  };
+
+  const defaultValues: FormValues = {
+    ...defaultTaskValues,
+    ...task,
+    ...defaultRecurrenceValues,
+  };
+
   const form = useForm<FormValues>({
     resolver: customResolver,
-    defaultValues: {
-      title: "",
-      dueDate: formatISO(new Date()),
-      recurring: false,
-      ...recurrenceFormValues,
-    },
+    defaultValues,
   });
 
   const onSubmit = (data: FormValues) => {
