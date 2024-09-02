@@ -33,7 +33,7 @@ export type RecurrenceFormValues = {
   byYearDay?: Date[];
   interval?: number | null;
   count?: number | null;
-  until?: string | null;
+  until?: Date | null;
 };
 
 export const recurrenceFormValues = {
@@ -129,7 +129,10 @@ const RecurrenceForm = ({ form }: { form: any }) => {
 
     const monthDays = byMonthDay.map((date: Date) => date.getDate());
     const yearDays = byYearDay.map((date: Date) =>
-      Math.ceil((date - new Date(date.getFullYear(), 0, 1) + 1) / 86400000)
+      Math.ceil(
+        (date.getTime() - new Date(date.getFullYear(), 0, 1).getTime() + 1) /
+          86400000
+      )
     );
 
     const rule = new RRule({

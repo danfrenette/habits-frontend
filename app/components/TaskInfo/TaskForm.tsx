@@ -23,6 +23,7 @@ import {
 import { FormValues } from "../../tasks/new/page";
 import { Switch } from "@/app/components/ui/switch";
 import RecurrenceForm, {
+  RecurrenceFormValues,
   recurrenceFormValues,
 } from "@/app/components/RecurrenceForm/RecurrenceForm";
 import { useCreateTask } from "@/app/lib/queries/useCreateTask";
@@ -31,14 +32,14 @@ import { toast } from "@/app/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Task } from "@/app/types/backend/Task";
 import { RRule, rrulestr } from "rrule";
-import { start } from "repl";
 
 type Props = {
   userId: string;
   task?: Task;
+  rruleOptions?: RecurrenceFormValues;
 };
 
-export function TaskForm({ userId, task }: Props) {
+export function TaskForm({ userId, task, rruleOptions }: Props) {
   const router = useRouter();
   const createTask = useCreateTask(userId);
 
@@ -67,46 +68,7 @@ export function TaskForm({ userId, task }: Props) {
     recurring: false,
   };
 
-  const rruleString = task?.recurrenceRule?.rrule;
-  const existingRRule = rruleString ? rrulestr(rruleString) : new RRule();
-
-  const {
-    options: {
-      dtstart,
-      freq,
-      byweekday,
-      bymonthday,
-      byyearday,
-      interval,
-      count,
-      until,
-    } = {},
-  } = existingRRule;
-
-  const monthDates = bymonthday?.map(
-    (day) => new Date(new Date().getFullYear(), new Date().getMonth(), day)
-  );
-
-  const yearDates = byyearday?.map((day) => {
-    const startOfYear = new Date(new Date().getFullYear(), 0, 1); // January 1st
-
-    startOfYear.setDate(startOfYear.getDate() + day - 1);
-    return startOfYear;
-  });
-
-  const frequency = freq !== undefined && freq !== null ? freq : 3;
-
-  const defaultRecurrenceValues = {
-    rrule: task?.recurrenceRule?.rrule || "", // Use the existing rrule string, or an empty string if not available
-    startDate: dtstart || recurrenceFormValues.startDate,
-    frequency: frequency,
-    byWeekday: byweekday || recurrenceFormValues.byWeekday,
-    byMonthDay: monthDates || recurrenceFormValues.byMonthDay,
-    byYearDay: yearDates || recurrenceFormValues.byYearDay,
-    interval: interval || recurrenceFormValues.interval,
-    count: count || recurrenceFormValues.count,
-    until: until || recurrenceFormValues.until,
-  };
+  const defaultRecurrenceValues = rruleOptions || recurrenceFormValues;
 
   const defaultValues: FormValues = {
     ...defaultTaskValues,
