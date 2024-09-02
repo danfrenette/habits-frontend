@@ -3,7 +3,10 @@
 import { useTask } from "@/app/lib/queries/useTask";
 import { TaskForm } from "./TaskForm";
 import { rrulestr } from "rrule";
-import { RecurrenceFormValues } from "../RecurrenceForm/RecurrenceForm";
+import {
+  recurrenceFormValues,
+  RecurrenceFormValues,
+} from "../RecurrenceForm/RecurrenceForm";
 
 type Props = {
   userId: string;
@@ -54,12 +57,12 @@ export default function TaskInfo({ userId, taskSlug }: Props) {
       rrule: task.recurrenceRule.rrule,
       startDate: dtstart,
       frequency: freq,
-      byWeekday: byweekday,
-      byMonthDay: monthDates,
-      byYearDay: yearDates,
-      interval: interval,
-      count: count,
-      until: until,
+      byWeekday: byweekday || recurrenceFormValues.byWeekday,
+      byMonthDay: monthDates || recurrenceFormValues.byMonthDay,
+      byYearDay: yearDates || recurrenceFormValues.byYearDay,
+      interval: interval || recurrenceFormValues.interval,
+      count: count || recurrenceFormValues.count,
+      until: until || recurrenceFormValues.until,
     };
   };
 
