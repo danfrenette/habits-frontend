@@ -7,7 +7,6 @@ type TaskFormValues = {
   title: string;
   dueDate?: string;
   recurring: boolean;
-  until: Date | null;
   startDate: Date;
   rrule: string;
 };

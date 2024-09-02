@@ -26,7 +26,7 @@ import { Frequency, RRule } from "rrule";
 
 export type RecurrenceFormValues = {
   rrule: string;
-  startDate?: Date;
+  startDate: Date;
   frequency?: Frequency;
   byWeekday?: number[];
   byMonthDay?: Date[];
